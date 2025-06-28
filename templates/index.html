@@ -2,15 +2,78 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Сервер картинок</title>
+    <title>Image Server</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: #151515;
+            font-family: 'Segoe UI', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .hero-content h1 {
+            color: #ccc;
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .hero-content p {
+            font-size: 14px;
+            color: #ccc;
+            margin-bottom: 20px;
+        }
+
+        .hero-button {
+            background-color: #3366ff;
+            color: white;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .hero-button:hover {
+            background-color: #254eda;
+        }
+
+        .hero-image img {
+            max-width: 320px;
+            height: auto;
+            margin-top: 30px;
+        }
+    </style>
 </head>
 <body>
-
-    <h1>Сервер картинок</h1>
-    <ul>
-    <li><a href="/upload">Загрузить изображение</a></li>
-    <li><a href="/images">Посмотреть изображения</a></li>
-    </ul>
-
+<section class="hero">
+    <div class="hero-content">
+        <h1>Upload Photos</h1>
+        <p>Upload selfies, memes, or any fun pictures here.</p>
+        <a href="/upload" class="hero-button">TAIL-ENT SHOWCASE</a>
+    </div>
+    <div class="hero-image">
+        <img src="/static/start1.png" alt="">
+    </div>
+</section>
 </body>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const randomNumber = Math.floor(Math.random() * 5) + 1;
+        const imageElement = document.querySelector(".hero-image img");
+        imageElement.src = `/static/start${randomNumber}.png`;
+    });
+</script>
 </html>

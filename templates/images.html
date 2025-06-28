@@ -84,6 +84,41 @@
             border-radius: 5px;
             cursor: pointer;
         }
+        table {
+            /*
+            width: 80%;
+            max-width: 800px;
+            */
+            margin: 0 auto;
+            border-collapse: collapse;
+            text-align: left;
+        }
+        th, td {
+            padding: 12px 15px;
+        }
+        th {
+            color: #555;
+        }
+        td img.icon {
+            width: 20px;
+            vertical-align: middle;
+            margin-right: 5px;
+        }
+        .delete-btn {
+            border: none;
+        /*    background-color: #ff6b6b;*/
+        /*    color: white;*/
+        /*    border: none;*/
+        /*    border-radius: 50%;*/
+        /*    padding: 8px;*/
+        /*    cursor: pointer;*/
+        }
+        .delete-btn:hover {
+            background-color: #ff4c4c;
+        }
+        .url-cell {
+            word-break: break-all;
+        }
     </style>
 </head>
 <body>
@@ -91,28 +126,39 @@
     <p>Upload selfies, memes, or any fun pictures here.</p>
 
     <div class="tabs">
-        <a href="/upload" class="active">Upload</a>
-        <a href="/pictures" class="disabled">Images</a>
+        <a href="/upload" class="disabled">Upload</a>
+        <a href="/pictures" class="active">Images</a>
     </div>
-
-    <div class="upload-box">
-        <div class="upload-icon">⬆️</div>
-        <p>Select a file or drag and drop here</p>
-        <p style="font-size: 12px; color: #aab0ff;">Only support .jpg, .png and .gif.<br>Maximum file size is 5MB</p>
-    </div>
-
-    <form action="/upload" enctype="multipart/form-data" method="post">
-        <input id="fileInput" type="file" name="file" accept=".jpg, .jpeg, .png, .gif" style="display: none;" required onchange="document.getElementsByName('filename')[0].value = this.files[0].name;">
-        <button type="button" class="browse-button" onclick="document.getElementById('fileInput').click();">BROWSE YOUR FILE</button>
-        <br><br>
-        <div class="current-upload">
-            <p><b>Current Upload</b></p>
-            <input type="text" name="filename" placeholder="https://">
-<!--            <button class="copy-button">COPY</button>-->
-        </div>
-        <br>
-        <button class="browse-button" type="submit">SUBMIT!</button>
-    </form>
-
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Url</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+{% for image in images %}
+            <tr>
+                <td><img src="/static/avatar.png" class="icon">{{ image.name }}</td>
+                <td class="url-cell"><a href="/images/{{ image.name }}">/images/{{ image.name }}</a></td>
+                <td><button class="delete-btn" onclick="deleteImage('{{ image.name }}')"><img src="/static/basket.png"></button></td>
+            </tr>
+{% endfor %}
+        </tbody>
+    </table>
+<script>
+function deleteImage(filename) {
+    fetch('/remove?filename=' + encodeURIComponent(filename))
+        .then(response => response.text())
+        .then(data => {
+            alert(data);
+            location.reload();
+        })
+        .catch(error => {
+            alert('Error: ' + error);
+        });
+}
+</script>
 </body>
 </html>

@@ -5,6 +5,7 @@ task.md
 
 .venv
 .idea
+images/*
 
 ### Django ###
 *.log

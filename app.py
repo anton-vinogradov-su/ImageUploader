@@ -9,7 +9,6 @@ import logging
 from datetime import datetime
 from utils.file_utils import is_allowed_file, MAX_FILE_SIZE, get_unique_name
 
-
 logs_dir = Path("logs")
 logs_dir.mkdir(exist_ok=True)
 log_file = logs_dir / "app.log"
@@ -34,12 +33,32 @@ async def read_root(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
 
-@app.get("/upload/", response_class=HTMLResponse)
+@app.get("/pictures", response_class=HTMLResponse)
+async def list_img(request: Request):
+    image_dir = Path("./images")
+    image_files = [f for ext in ("*.png", "*.jpg", "*.jpeg", "*.gif") for f in image_dir.glob(ext)]
+    for file in image_files:
+        print(file.name)
+    return templates.TemplateResponse("images.html", {"request": request, "images": image_files})
+
+
+@app.get("/upload", response_class=HTMLResponse)
 async def upload_img(request: Request):
     return templates.TemplateResponse("upload.html", {"request": request})
 
 
-@app.post("/upload/")
+@app.get("/remove", response_class=HTMLResponse)
+async def remove_img(request: Request, filename: str):
+    image_dir = Path("./images")
+    file_path = image_dir / filename
+    if file_path.exists() and file_path.is_file():
+        file_path.unlink()
+        return PlainTextResponse(f"Файл {filename} успешно удалён")
+    else:
+        return PlainTextResponse(f"Файл {filename} не найден")
+
+
+@app.post("/upload")
 async def upload_img(request: Request, file: UploadFile = File(...)):
     print(f'Файл получен {file.filename}')
     my_file = Path(file.filename)
@@ -64,10 +83,8 @@ async def upload_img(request: Request, file: UploadFile = File(...)):
     save_path.write_bytes(content)
     print(f"Файл {str(save_path)} записан")
 
-
     return {'message': f'Файл {file.filename} получен\n Сохраним в {save_path}'}
 
 
 if __name__ == '__main__':
     uvicorn.run("app:app", host="127.0.0.1", port=8000, reload=True)
-

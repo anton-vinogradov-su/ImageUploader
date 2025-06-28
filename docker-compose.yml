@@ -5,6 +5,7 @@ services:
     restart: unless-stopped
     volumes:
       - ./images:/app/images
+      - ./static:/app/static
       - ./logs:/app/logs
     expose:
       - "8000"
@@ -19,6 +20,7 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
       - ./images:/images:ro
+      - ./static:/static:ro
     ports:
       - "8080:80"
       - "80:80"
@@ -26,3 +28,4 @@ services:
 volumes:
   images:
   logs:
+  static:

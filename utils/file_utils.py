@@ -1,9 +1,8 @@
 from pathlib import Path
 import uuid
 
-
 ALLOW_EXTENSIONS = [".jpg", ".jpeg", ".png", ".gif"]
-MAX_FILE_SIZE = 5 * 1024 * 1024
+MAX_FILE_SIZE = 5 * 1024 * 1024  # 5Mb
 
 
 def is_allowed_file(filename: Path) -> bool:
