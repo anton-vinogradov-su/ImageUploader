@@ -1,5 +1,3 @@
-import sys
-
 from fastapi import FastAPI, Request, UploadFile, File
 from fastapi.responses import HTMLResponse, PlainTextResponse
 from fastapi.templating import Jinja2Templates
@@ -31,7 +29,7 @@ templates = Jinja2Templates(directory="templates")
 @app.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):
     logging.debug('отдаём index.html')
-    return templates.TemplateResponse("index.html", {"request": request})
+    return templates.TemplateResponse(request, "index.html", {"request": request})
 
 
 @app.get("/pictures", response_class=HTMLResponse)
@@ -39,13 +37,21 @@ async def list_img(request: Request):
     logging.debug(f'Отображаем список изображений')
     image_dir = Path("./images")
     image_files = [f for ext in ("*.png", "*.jpg", "*.jpeg", "*.gif") for f in image_dir.glob(ext)]
-    return templates.TemplateResponse("images.html", {"request": request, "images": image_files})
+    image_list = []
+
+    for f in image_files:
+        image_list.append({
+            "name": f.name,
+            "created": datetime.fromtimestamp(f.stat().st_mtime).strftime("%Y-%m-%d") #  %H:%M:%S
+        })
+
+    return templates.TemplateResponse(request, "images.html", {"request": request, "images": image_list})
 
 
 @app.get("/upload", response_class=HTMLResponse)
 async def upload_img(request: Request):
     logging.debug(f'отдаём upload.html')
-    return templates.TemplateResponse("upload.html", {"request": request})
+    return templates.TemplateResponse(request, "upload.html", {"request": request})
 
 
 @app.get("/remove", response_class=HTMLResponse)

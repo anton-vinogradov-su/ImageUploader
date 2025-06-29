@@ -134,6 +134,7 @@
             <tr>
                 <th>Name</th>
                 <th>Url</th>
+                <th>Date</th>
                 <th>Delete</th>
             </tr>
         </thead>
@@ -142,6 +143,7 @@
             <tr>
                 <td><img src="/static/avatar.png" class="icon">{{ image.name }}</td>
                 <td class="url-cell"><a href="/images/{{ image.name }}">/images/{{ image.name }}</a></td>
+                <td class="url-cell">{{ image.created }}</td>
                 <td><button class="delete-btn" onclick="deleteImage('{{ image.name }}')"><img src="/static/basket.png"></button></td>
             </tr>
 {% endfor %}

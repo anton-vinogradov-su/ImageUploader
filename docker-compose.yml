@@ -1,6 +1,7 @@
 services:
   app:
     build: .
+    image: antonvinogradov/image-uploader-app
     container_name: image_server_app
     restart: unless-stopped
     volumes:

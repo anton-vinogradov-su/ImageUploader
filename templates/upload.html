@@ -95,7 +95,7 @@
         <a href="/pictures" class="disabled">Images</a>
     </div>
 
-    <div class="upload-box">
+    <div class="upload-box" id="uploadBox">
         <div class="upload-icon">⬆️</div>
         <p>Select a file or drag and drop here</p>
         <p style="font-size: 12px; color: #aab0ff;">Only support .jpg, .png and .gif.<br>Maximum file size is 5MB</p>
@@ -142,6 +142,36 @@
         .catch(error => {
             alert('Error: ' + error);
         });
+    });
+
+    const uploadBox = document.getElementById('uploadBox');
+    const fileInput = document.getElementById('fileInput');
+
+    uploadBox.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        uploadBox.style.borderColor = '#4c6ef5';
+        uploadBox.style.backgroundColor = '#e6e9ff';
+    });
+
+    uploadBox.addEventListener('dragleave', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        uploadBox.style.borderColor = '#aab0ff';
+        uploadBox.style.backgroundColor = '#ffffff';
+    });
+
+    uploadBox.addEventListener('drop', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        uploadBox.style.borderColor = '#aab0ff';
+        uploadBox.style.backgroundColor = '#ffffff';
+
+        if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+            fileInput.files = e.dataTransfer.files;
+            document.getElementsByName('filename')[0].value = e.dataTransfer.files[0].name;
+            e.dataTransfer.clearData();
+        }
     });
 </script>
 
