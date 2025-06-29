@@ -101,7 +101,7 @@
         <p style="font-size: 12px; color: #aab0ff;">Only support .jpg, .png and .gif.<br>Maximum file size is 5MB</p>
     </div>
 
-    <form action="/upload" enctype="multipart/form-data" method="post">
+    <form>
         <input id="fileInput" type="file" name="file" accept=".jpg, .jpeg, .png, .gif" style="display: none;" required onchange="document.getElementsByName('filename')[0].value = this.files[0].name;">
         <button type="button" class="browse-button" onclick="document.getElementById('fileInput').click();">BROWSE YOUR FILE</button>
         <br><br>
@@ -113,6 +113,37 @@
         <br>
         <button class="browse-button" type="submit">SUBMIT!</button>
     </form>
+
+<script>
+    const form = document.querySelector('form');
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const fileInput = document.getElementById('fileInput');
+        if (fileInput.files.length === 0) {
+            alert("Please select a file.");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('file', fileInput.files[0]);
+
+        fetch('/upload', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Показать текст ответа в alert или в отдельном элементе
+            console.log(data.message);
+            alert(data.message);
+            location.reload();
+        })
+        .catch(error => {
+            alert('Error: ' + error);
+        });
+    });
+</script>
 
 </body>
 </html>

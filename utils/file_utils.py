@@ -7,8 +7,6 @@ MAX_FILE_SIZE = 5 * 1024 * 1024  # 5Mb
 
 def is_allowed_file(filename: Path) -> bool:
     """Проверяем, есть ли расширение в списке разрешенных."""
-    # ext = filename.split(".")[-1]
-    # file_path = Path(filename)
     ext = filename.suffix.lower()
     print(ext)
     return ext in ALLOW_EXTENSIONS
