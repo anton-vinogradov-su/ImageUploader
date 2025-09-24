@@ -6,6 +6,7 @@ from pathlib import Path
 import logging
 from datetime import datetime
 from utils.file_utils import is_allowed_file, MAX_FILE_SIZE, get_unique_name
+from fastapi.staticfiles import StaticFiles
 
 logs_dir = Path("logs")
 logs_dir.mkdir(exist_ok=True)
@@ -22,6 +23,9 @@ logging.basicConfig(
 )
 
 app = FastAPI()
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/images", StaticFiles(directory="images"), name="images")
 
 templates = Jinja2Templates(directory="templates")
 
@@ -42,7 +46,7 @@ async def list_img(request: Request):
     for f in image_files:
         image_list.append({
             "name": f.name,
-            "created": datetime.fromtimestamp(f.stat().st_mtime).strftime("%Y-%m-%d") #  %H:%M:%S
+            "created": datetime.fromtimestamp(f.stat().st_mtime).strftime("%Y-%m-%d")  # %H:%M:%S
         })
 
     return templates.TemplateResponse(request, "images.html", {"request": request, "images": image_list})
