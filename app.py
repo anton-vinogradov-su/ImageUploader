@@ -7,6 +7,10 @@ import logging
 from datetime import datetime
 from utils.file_utils import is_allowed_file, MAX_FILE_SIZE, get_unique_name
 from fastapi.staticfiles import StaticFiles
+from pathlib import Path
+
+Path("static").mkdir(exist_ok=True)
+Path("images").mkdir(exist_ok=True)
 
 logs_dir = Path("logs")
 logs_dir.mkdir(exist_ok=True)
